@@ -8,7 +8,16 @@ class HumiditySensor {
 
  private:
   byte __IO_pin;
+  uint16_t __value;
+
+ private:
+  void __readValue();
 
  public:
-  uint16_t ReadValue();
+  uint16_t getValue();
+  void executeReadValue();
 };
+
+namespace humuditySendorTasks {
+void taskReadData(void* p);
+}
