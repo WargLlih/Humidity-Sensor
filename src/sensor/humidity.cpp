@@ -2,19 +2,19 @@
 
 #include "humidity.hpp"
 
-HumiditySensor::HumiditySensor(byte IO_pin) : __IO_pin(IO_pin), __value(0) {}
+HumiditySensor::HumiditySensor(byte IO_pin) : io_pin(IO_pin), value(0) {}
 
-void HumiditySensor::__readValue() {
-  this->__value = analogRead(this->__IO_pin);
+void HumiditySensor::readValue() {
+  this->value = analogRead(this->io_pin);
 }
 
 uint16_t HumiditySensor::getValue() {
-  return this->__value;
+  return this->value;
 }
 
 void HumiditySensor::executeReadValue() {
   for (; true; delay(100)) {
-    this->__readValue();
+    this->readValue();
   }
 }
 
