@@ -31,7 +31,7 @@ void setup() {
 
   // __________________________________________________________________________
   xTaskCreatePinnedToCore(
-      humuditySendorTasks::taskReadData, "Task-Read-Sensor-Data",
+      humiditySensorTasks::taskReadData, "Task-Read-Sensor-Data",
       configMINIMAL_STACK_SIZE + 2024, sensor, 1, &task2, APP_CPU_NUM);
 }
 

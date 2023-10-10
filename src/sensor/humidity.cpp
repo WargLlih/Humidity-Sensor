@@ -18,9 +18,9 @@ void HumiditySensor::executeReadValue() {
   }
 }
 
-namespace humuditySendorTasks {
+namespace humiditySensorTasks {
 void taskReadData(void* p) {
   HumiditySensor* sensor = (HumiditySensor*)p;
   sensor->executeReadValue();
 }
-}  // namespace humuditySendorTasks
+}  // namespace humiditySensorTasks
