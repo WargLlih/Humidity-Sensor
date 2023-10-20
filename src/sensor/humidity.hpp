@@ -1,42 +1,50 @@
 #pragma once
-
 #include "utils/types.hpp"
+#include <ADS1X15.h>
+#include <cstdint>
 
+#define SENSOR_PIN_IN_ADS1115 0
 /**
  * @class HumiditySensor
- * @brief A class for interfacing with a humidity sensor.
+ * @brief A class for interfacing with a humidity sensor via ADS1115.
  *
  * This class provides methods to read humidity data from a sensor and execute
  * reading operations.
  */
 class HumiditySensor {
- public:
+public:
   /**
    * @brief Constructor for the HumiditySensor class.
    *
-   * @param IO The input/output (IO) pin connected to the humidity sensor.
+   * @param address The i2c address from ADS1115
+   * connected to the humidity sensor.
    */
-  HumiditySensor(byte IO);
+  HumiditySensor(byte address);
 
- private:
+private:
   /**
-   * @brief Private member variable to store the IO pin connected to the
-   * humidity sensor.
+   * @brief Private member variable to store the i2c address from ADS1115
+   * connected to the humidity sensor.
    */
-  byte io_pin;
+  byte i2c_address;
 
   /**
    * @brief Private member variable to store the humidity sensor's value.
    */
   uint16_t value;
 
- private:
+  /**
+   * @brief Private member variable to store the ADS1115 instance.
+   */
+  ADS1115 *ads_module;
+
+private:
   /**
    * @brief Private method to read the humidity sensor's value.
    */
   void readValue();
 
- public:
+public:
   /**
    * @brief Get the last-read value from the humidity sensor.
    *
@@ -63,5 +71,5 @@ namespace humiditySensorTasks {
  *
  * @param p A pointer (void*) that can be used to pass any necessary parameters.
  */
-void taskReadData(void* p);
-}  // namespace humiditySensorTasks
+void taskReadData(void *p);
+} // namespace humiditySensorTasks
