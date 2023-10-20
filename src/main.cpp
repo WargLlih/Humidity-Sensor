@@ -1,5 +1,6 @@
 #include <Arduino.h>
 
+#include "HardwareSerial.h"
 #include "lcd/LCD.hpp"
 #include "sensor/humidity.hpp"
 
@@ -9,12 +10,12 @@ TaskHandle_t task2;
 
 void setup() {
   Serial.begin(115200);
-  HumiditySensor* sensor = new HumiditySensor(33);
-  LCDManager* lcd_manager = new LCDManager();
+  HumiditySensor *sensor = new HumiditySensor(0x48);
+  LCDManager *lcd_manager = new LCDManager(0x27);
 
   // __________________________________________________________________________
-  lcdTasks::taskPrintOnLCDParam_t* p1 = NULL;
-  p1 = (lcdTasks::taskPrintOnLCDParam_t*)malloc(
+  lcdTasks::taskPrintOnLCDParam_t *p1 = NULL;
+  p1 = (lcdTasks::taskPrintOnLCDParam_t *)malloc(
       sizeof(lcdTasks::taskPrintOnLCDParam_t));
 
   if (p1 == NULL) {
