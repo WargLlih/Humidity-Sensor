@@ -1,7 +1,7 @@
 #pragma once
 
-#include <LiquidCrystal_I2C.h>
 #include "../sensor/humidity.hpp"
+#include <LiquidCrystal_I2C.h>
 
 /**
  * @class LCDManager
@@ -12,32 +12,36 @@
  * data on an LCD screen.
  */
 class LCDManager {
- public:
+public:
   /**
    * @brief Constructor for the LCDManager class.
+   *
+   * @param address The i2c address from ADS1115
+   * connected to the humidity sensor.
+   *
    */
-  LCDManager();
+  LCDManager(byte address);
 
   /**
    * @brief Destructor for the LCDManager class.
    */
   ~LCDManager();
 
- private:
+private:
   /**
    * @brief Pointer to the LiquidCrystal_I2C object used for controlling the LCD
    * screen.
    */
-  LiquidCrystal_I2C* lcd_obj;
+  LiquidCrystal_I2C *lcd_obj;
 
- public:
+public:
   /**
    * @brief Get a pointer to the LiquidCrystal_I2C object used for the LCD
    * screen.
    *
    * @return A pointer to the LiquidCrystal_I2C object.
    */
-  LiquidCrystal_I2C* screenLCD();
+  LiquidCrystal_I2C *screenLCD();
 
   /**
    * @brief Print a 16-bit integer value on the LCD screen.
@@ -64,8 +68,8 @@ namespace lcdTasks {
  * @brief Struct representing the parameters for the taskPrintOnLCD function.
  */
 typedef struct {
-  HumiditySensor* humiditySensor;  // Pointer to a humidity sensor object.
-  LCDManager* lcdManager;          // Pointer to an LCDManager object.
+  HumiditySensor *humiditySensor; // Pointer to a humidity sensor object.
+  LCDManager *lcdManager;         // Pointer to an LCDManager object.
 } taskPrintOnLCDParam_t;
 
 /**
@@ -77,5 +81,5 @@ typedef struct {
  * @param p A pointer to a taskPrintOnLCDParam_t struct containing the necessary
  * parameters.
  */
-void taskPrintOnLCD(void* p);
-}  // namespace lcdTasks
+void taskPrintOnLCD(void *p);
+} // namespace lcdTasks

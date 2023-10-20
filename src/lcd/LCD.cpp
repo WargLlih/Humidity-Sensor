@@ -1,10 +1,11 @@
 #include "LCD.hpp"
 
-#include <LiquidCrystal_I2C.h>
 #include "../sensor/humidity.hpp"
+#include "../utils/types.hpp"
+#include <LiquidCrystal_I2C.h>
 
-LCDManager::LCDManager() {
-  this->lcd_obj = new LiquidCrystal_I2C(0x27, 20, 4);
+LCDManager::LCDManager(byte address) {
+  this->lcd_obj = new LiquidCrystal_I2C(address, 20, 4);
   this->lcd_obj->init();
   this->lcd_obj->clear();
 }
@@ -17,9 +18,7 @@ LCDManager::~LCDManager() {
   this->lcd_obj = NULL;
 }
 
-LiquidCrystal_I2C* LCDManager::screenLCD() {
-  return this->lcd_obj;
-}
+LiquidCrystal_I2C *LCDManager::screenLCD() { return this->lcd_obj; }
 
 void LCDManager::Light(bool state) {
   state ? this->lcd_obj->backlight() : this->lcd_obj->noBacklight();
@@ -27,17 +26,17 @@ void LCDManager::Light(bool state) {
 
 void LCDManager::printData(uint16_t data) {
   this->lcd_obj->setCursor(0, 0);
-  this->lcd_obj->printf("raw: %4u (%.2f)", data, data / 4096.0);
+  this->lcd_obj->printf("raw: %5u (%.2f)", data, data / 65536.0);
 
   this->lcd_obj->setCursor(0, 1);
-  this->lcd_obj->printf("voltage: %.1fv", data / 4096.0 * 3.3);
+  this->lcd_obj->printf("voltage: %.1fv", data / 65536.0 * 5);
 }
 
 namespace lcdTasks {
-void taskPrintOnLCD(void* p) {
-  taskPrintOnLCDParam_t* params = (taskPrintOnLCDParam_t*)p;
-  HumiditySensor* sensor = params->humiditySensor;
-  LCDManager* lcd_manager = params->lcdManager;
+void taskPrintOnLCD(void *p) {
+  taskPrintOnLCDParam_t *params = (taskPrintOnLCDParam_t *)p;
+  HumiditySensor *sensor = params->humiditySensor;
+  LCDManager *lcd_manager = params->lcdManager;
 
   lcd_manager->Light(true);
 
@@ -46,4 +45,4 @@ void taskPrintOnLCD(void* p) {
     lcd_manager->printData(data);
   }
 }
-}  // namespace lcdTasks
+} // namespace lcdTasks
