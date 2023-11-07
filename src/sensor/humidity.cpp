@@ -1,18 +1,7 @@
 #include "humidity.hpp"
-#include <ADS1X15.h>
 #include <Arduino.h>
 
-ADS1115* ADS_M = NULL;
-
 HumiditySensor::HumiditySensor() {
-  // ADS_M = new ADS1115(0x48);
-  // if (!ADS_M->begin()) {
-  //   Serial.println("Error on being ADS1115");
-  // }
-  // ADS_M->setGain(0);
-
-  // this->_value = 0;
-
   pinMode(DIGITAL_PIN, INPUT_PULLUP);
 }
 
@@ -34,10 +23,10 @@ void HumiditySensor::execute() {
     }
 
     if (millis() - t0 > 1000) {
+      vTaskDelay(1);
       t0 = millis();
       this->_value = cont;
       cont = 0;
-      vTaskDelay(1);
     }
   }
 }
