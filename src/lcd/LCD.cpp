@@ -25,11 +25,8 @@ void LCDManager::Light(bool state) {
 }
 
 void LCDManager::printData(uint16_t data) {
-  this->lcd_obj->setCursor(0, 0);
-  this->lcd_obj->printf("raw: %5u (%.2f)", data, data / 65536.0);
-
   this->lcd_obj->setCursor(0, 1);
-  this->lcd_obj->printf("voltage: %.1fv", data / 65536.0 * 5);
+  this->lcd_obj->printf("r: %5u", data);
 }
 
 namespace lcdTasks {
@@ -41,7 +38,8 @@ void taskPrintOnLCD(void *p) {
   lcd_manager->Light(true);
 
   for (; true; vTaskDelay(pdMS_TO_TICKS(100))) {
-    uint16_t data = sensor->getValue();
+    uint16_t data = sensor->value();
+    Serial.println(data);
     lcd_manager->printData(data);
   }
 }
