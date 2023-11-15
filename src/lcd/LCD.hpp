@@ -48,7 +48,7 @@ public:
    *
    * @param data The integer value to be displayed on the LCD screen.
    */
-  void printData(uint16_t data);
+  void printData(uint16_t data, float temp);
 
   /**
    * @brief Control the backlight of the LCD screen.

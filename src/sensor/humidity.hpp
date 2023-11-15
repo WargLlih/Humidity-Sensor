@@ -11,6 +11,7 @@ private:
   uint16_t _value;
 
 public:
+  float t;
   void execute();
   uint16_t value();
 };

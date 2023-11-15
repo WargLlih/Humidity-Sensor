@@ -5,9 +5,6 @@ HumiditySensor::HumiditySensor() {
   pinMode(DIGITAL_PIN, INPUT_PULLUP);
 }
 
-// 5v
-// min 2k
-// max 60k
 void HumiditySensor::execute() {
   unsigned long t0 = millis();
   uint32_t cont = 0;

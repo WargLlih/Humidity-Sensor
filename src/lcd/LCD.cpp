@@ -5,7 +5,7 @@
 #include <LiquidCrystal_I2C.h>
 
 LCDManager::LCDManager(byte address) {
-  this->lcd_obj = new LiquidCrystal_I2C(address, 20, 4);
+  this->lcd_obj = new LiquidCrystal_I2C(address, 16, 4);
   this->lcd_obj->init();
   this->lcd_obj->clear();
 }
@@ -24,9 +24,19 @@ void LCDManager::Light(bool state) {
   state ? this->lcd_obj->backlight() : this->lcd_obj->noBacklight();
 }
 
-void LCDManager::printData(uint16_t data) {
+float UA(float t);
+
+float UR(uint16_t f);
+
+void LCDManager::printData(uint16_t data, float temp) {
+  this->lcd_obj->setCursor(0, 0);
+  this->lcd_obj->printf("b3-n5 INPE");
   this->lcd_obj->setCursor(0, 1);
-  this->lcd_obj->printf("r: %5u", data);
+  this->lcd_obj->printf("RAW (Hz): %5u", data);
+  this->lcd_obj->setCursor(0, 2);
+  this->lcd_obj->printf("UR (%.2f C):", temp);
+  this->lcd_obj->setCursor(0, 3);
+  this->lcd_obj->printf("%.2f", UR(data)/UA(temp));
 }
 
 namespace lcdTasks {
@@ -37,10 +47,9 @@ void taskPrintOnLCD(void *p) {
 
   lcd_manager->Light(true);
 
-  for (; true; vTaskDelay(pdMS_TO_TICKS(100))) {
+  for (; true; vTaskDelay(pdMS_TO_TICKS(500))) {
     uint16_t data = sensor->value();
-    Serial.println(data);
-    lcd_manager->printData(data);
+    lcd_manager->printData(data, sensor->t);
   }
 }
 } // namespace lcdTasks
