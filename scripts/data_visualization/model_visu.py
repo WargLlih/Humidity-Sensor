@@ -31,11 +31,9 @@ def animate(i):
     global x, temperature_dht, air_humidity_dht, air_humidity_inpe_hz, air_humidity_inpe_model
 
     rhz = payload['air_humidity_inpe_hz']
-    # model = 35.9/-101.305 * (rhz) + 158.62
-    # model = 109.2365 - 0.156*rhz
-    # model = 109.9128 - 0.1645 * rhz
-    # model = 159.794788979652 - 0.365979079326695*rhz
-    model = 110.967036461073 - 0.177165179036473*rhz
+    # model = 110.967036461073 - 0.177165179036473*rhz
+    # model = -0.3238475146123926*258 + 163.59733637809185
+    model = -0.3236888671696293*rhz + 163.5348810653951
     
     x.append(next(index))
     temperature_dht.append(payload['temperature_dht'])

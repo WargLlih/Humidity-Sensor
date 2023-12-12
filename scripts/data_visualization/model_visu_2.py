@@ -13,45 +13,36 @@ plt.style.use('ggplot')
 
 air_humidity_dht = []
 air_humidity_inpe_hz = []
+modle_arr = []
 
 index = count()
 def animate(i):
     data = s.readline()
-    # print(data)
+    print(data)
     try:
         payload = json.loads(data)
     except Exception as e:
         # print(e)
         return
-    print(payload)
+    # print(payload)
 
     global air_humidity_dht, air_humidity_inpe_hz
+
+    rhz = payload['air_humidity_inpe_hz']
+    model = -0.3236888671696293*rhz + 163.5348810653951
+    modle_arr.append(model)
     
     air_humidity_dht.append(payload['air_humidity_dht'])
-    air_humidity_inpe_hz.append(payload['air_humidity_inpe_hz'])
+    air_humidity_inpe_hz.append(rhz)
 
     air_humidity_dht = air_humidity_dht[::-1][:2000][::-1]
     air_humidity_inpe_hz = air_humidity_inpe_hz[::-1][:2000][::-1]
 
-   
     plt.cla()
 
-    plt.plot(
-        air_humidity_inpe_hz,
-        air_humidity_dht,
-        'o',
-        color='BLUE', 
-        label="DHT22 Umidade (%)"
-    )
+    plt.plot(air_humidity_inpe_hz, air_humidity_dht, '.', color='red', label="INPE b3-n5 Frequência (kHz)")
 
-    plt.annotate(
-        f"{payload['air_humidity_dht']}", 
-        xy=(air_humidity_inpe_hz[-1], 
-        air_humidity_dht[-1]), 
-        xytext=(air_humidity_inpe_hz[-1], 
-        air_humidity_dht[-1]),
-        arrowprops=dict(facecolor='black', shrink=0.05),
-    )
+    plt.plot(air_humidity_inpe_hz, modle_arr, color='black', label="INPE b3-n5 Frequência (kHz)")
 
     plt.legend(loc='lower left')
 
