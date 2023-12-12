@@ -24,19 +24,13 @@ void LCDManager::Light(bool state) {
   state ? this->lcd_obj->backlight() : this->lcd_obj->noBacklight();
 }
 
-float UA(float t);
+float UR(uint32_t f);
 
-float UR(uint16_t f);
-
-void LCDManager::printData(uint16_t data, float temp) {
+void LCDManager::printData(uint32_t data, float temp) {
   this->lcd_obj->setCursor(0, 0);
   this->lcd_obj->printf("b3-n5 INPE");
   this->lcd_obj->setCursor(0, 1);
-  this->lcd_obj->printf("RAW (Hz): %5u", data);
-  this->lcd_obj->setCursor(0, 2);
-  this->lcd_obj->printf("UR (%.2f C):", temp);
-  this->lcd_obj->setCursor(0, 3);
-  this->lcd_obj->printf("%.2f", UR(data)/UA(temp));
+  this->lcd_obj->printf("UR: %.2f", UR(data));
 }
 
 namespace lcdTasks {
