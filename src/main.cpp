@@ -15,12 +15,8 @@ TaskHandle_t task1;
 TaskHandle_t task2;
 TaskHandle_t task3;
 
-float UA(float t) {
-  return 0.036609523809524 * t * t - 0.14380952380952 * t + 1.7657142857143;
-}
-
-float UR(uint16_t f) {
-  return -0.003579684973088356 * f + 212.33515215939502;
+float UR(uint32_t f) {
+  return -0.3236888671696293*f + 163.5348810653951;
 }
 
 void mydht(void* p) {
@@ -51,13 +47,11 @@ void mydht(void* p) {
 
     Serial.printf(
         "{\"temperature_dht\": %.2f,"
-        "\"air_humidity_dht\": %.3f, "
-        "\"air_humidity_inpe_hz\": %.2f,"
-        "\"air_humidity_inpe_model\": %.2f}\n",
+        "\"air_humidity_dht\": %.2f, "
+        "\"air_humidity_inpe_hz\": %.3f,",
         temperature_dht, 
         air_humidity_dht, 
-        sensor_h->value() / 1000.0,
-        UR(sensor_h->value()) / UA(temperature_dht));
+        sensor_h->value() / 1000.0);
   }
 }
 
