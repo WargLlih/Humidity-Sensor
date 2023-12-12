@@ -28,7 +28,7 @@ void HumiditySensor::execute() {
   }
 }
 
-uint16_t HumiditySensor::value() {
+uint32_t HumiditySensor::value() {
   return this->_value;
 }
 

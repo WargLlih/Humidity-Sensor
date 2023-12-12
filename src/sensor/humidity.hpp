@@ -8,12 +8,12 @@ public:
   HumiditySensor();
 
 private:
-  uint16_t _value;
+  uint32_t _value;
 
 public:
   float t;
   void execute();
-  uint16_t value();
+  uint32_t value();
 };
 
 namespace humiditySensorTasks {
