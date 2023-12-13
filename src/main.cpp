@@ -16,7 +16,7 @@ TaskHandle_t task2;
 TaskHandle_t task3;
 
 float UR(uint32_t f) {
-  return -0.3236888671696293*f + 163.5348810653951;
+  return -0.3236888671696293*f/1000 + 163.5348810653951;
 }
 
 void mydht(void* p) {
@@ -48,7 +48,7 @@ void mydht(void* p) {
     Serial.printf(
         "{\"temperature_dht\": %.2f,"
         "\"air_humidity_dht\": %.2f, "
-        "\"air_humidity_inpe_hz\": %.3f,",
+        "\"air_humidity_inpe_hz\": %.3f}\n",
         temperature_dht, 
         air_humidity_dht, 
         sensor_h->value() / 1000.0);
