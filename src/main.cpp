@@ -16,7 +16,14 @@ TaskHandle_t task2;
 TaskHandle_t task3;
 
 float UR(uint32_t f) {
-  return -0.3236888671696293*f/1000 + 163.5348810653951;
+  float ur = -0.3236888671696293*f/1000 + 163.5348810653951;
+  if (ur > 100) {
+    ur = 100;
+  }
+  if (ur <= 0) {
+    ur = 0;
+  }
+  return ur;
 }
 
 void mydht(void* p) {
@@ -83,9 +90,9 @@ void setup() {
       configMINIMAL_STACK_SIZE + 2048, sensor, 1, &task2, PRO_CPU_NUM);
 
   //__________________________________________________________________________
-  xTaskCreatePinnedToCore(mydht, "Task-Read-Sensor-DHT22",
-                          configMINIMAL_STACK_SIZE + 4000, sensor, 2, &task3,
-                          APP_CPU_NUM);
+  // xTaskCreatePinnedToCore(mydht, "Task-Read-Sensor-DHT22",
+  //                         configMINIMAL_STACK_SIZE + 4000, sensor, 2, &task3,
+  //                         APP_CPU_NUM);
 }
 
 void loop() {}
