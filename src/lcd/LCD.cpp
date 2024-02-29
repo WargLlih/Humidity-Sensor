@@ -1,10 +1,12 @@
 #include "LCD.hpp"
+#include <Arduino.h>
 
 #include <LiquidCrystal_I2C.h>
 #include "../sensor/humidity.hpp"
+#include "../utils/types.hpp"
 
-LCDManager::LCDManager() {
-  this->lcd_obj = new LiquidCrystal_I2C(0x27, 20, 4);
+LCDManager::LCDManager(byte address) {
+  this->lcd_obj = new LiquidCrystal_I2C(address, 16, 4);
   this->lcd_obj->init();
   this->lcd_obj->clear();
 }
@@ -25,12 +27,15 @@ void LCDManager::Light(bool state) {
   state ? this->lcd_obj->backlight() : this->lcd_obj->noBacklight();
 }
 
-void LCDManager::printData(uint16_t data) {
-  this->lcd_obj->setCursor(0, 0);
-  this->lcd_obj->printf("raw: %4u (%.2f)", data, data / 4096.0);
+float UR(uint32_t f);
 
+void LCDManager::printData(uint32_t data, float temp) {
+  this->lcd_obj->setCursor(0, 0);
+  this->lcd_obj->printf("b3-n5 INPE");
   this->lcd_obj->setCursor(0, 1);
-  this->lcd_obj->printf("voltage: %.1fv", data / 4096.0 * 3.3);
+  this->lcd_obj->print("                ");
+  this->lcd_obj->setCursor(0, 1);
+  this->lcd_obj->printf("UR: %.2f %", UR(data));
 }
 
 namespace lcdTasks {
@@ -41,9 +46,9 @@ void taskPrintOnLCD(void* p) {
 
   lcd_manager->Light(true);
 
-  for (; true; vTaskDelay(pdMS_TO_TICKS(100))) {
-    uint16_t data = sensor->getValue();
-    lcd_manager->printData(data);
+  for (; true; vTaskDelay(pdMS_TO_TICKS(500))) {
+    uint32_t data = sensor->value();
+    lcd_manager->printData(data, sensor->t);
   }
 }
 }  // namespace lcdTasks

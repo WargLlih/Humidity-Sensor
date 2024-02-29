@@ -1,2 +1,8 @@
 .pio
 .vscode
+venv
+get-platformio.py
+.cache
+compile_commands.json
+
+data_set_*.txt
